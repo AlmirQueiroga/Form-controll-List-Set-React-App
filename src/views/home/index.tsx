@@ -1,42 +1,44 @@
+import {  Button, FormControlLabel, Radio} from "@mui/material";
 import React from "react";
-import { Background } from "./home.styles";
+import { Background, BackgroundCard, GenderCheckbox, TextInput } from "./home.styles";
 
 export default function Home(): JSX.Element{
 
+  const [checked, setChecked] = React.useState(true);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+  
 	return(
 		<Background>
-      <div className="container-login">
-			  <div className="wrap-login">
-          <form className="form">
+      <BackgroundCard>
+        <div >
+          <TextInput label="RG"/>
+        </div>
+        <br/>
+        <div >
+          <TextInput label="Orgão Expeditor"/>
+        </div>
+        <br/>
+        <div >
+          <TextInput label="Data de Emissão"/>
+        </div>
+        <br/>
+        <div >
+          <br/>
+          <GenderCheckbox
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue="Masculino"
+            name="radio-buttons-group"> 
 
-            <div className="wrap-input">
-              <input type="RG"/> 
-              <span className="color-input" data-placeholder="RG"></span>
-            </div>
-
-            <div className="wrap-input">
-              <input type="Data de emissão"/> 
-              <span className="color-input" data-placeholder="Data de emissão"></span>
-            </div>
-
-            <div className="wrap-input">
-              <input type="Orgão Expeditor"/> 
-              <span className="color-input" data-placeholder="Orgão Expeditor"></span>
-            </div>
-
-            <div className="wrap-input">
-              <input type="Sexo"/> 
-              <span className="color-input" data-placeholder="Sexo"></span>
-            </div>
-
-            <div className="container-form-btn">
-              <button className="add-form-button" >Adicionar</button>
-            </div>
-
-          </form>
-		    </div>
-      </div>
+            <FormControlLabel value="Masculino" control={<Radio />} label="Masculino" />
+            <FormControlLabel value="Feminino" control={<Radio />} label="Feminino" />
+          </GenderCheckbox>
+        </div>
+        <br/>
+        <Button variant="contained">Adicionar</Button>
+      </BackgroundCard>       
 		</Background>
 	)
 }
