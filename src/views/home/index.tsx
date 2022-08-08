@@ -1,43 +1,29 @@
-import {  Button, FormControlLabel, Radio} from "@mui/material";
+import {  Box, Tab } from "@mui/material";
 import React from "react";
-import { Background, BackgroundCard, GenderCheckbox, TextInput } from "./home.styles";
+import CadastroForm from "../../components/CadastroForm/CadastroForm";
+import { Background, BackgroundCard } from "./home.styles";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+
 
 export default function Home(): JSX.Element{
 
-  const [checked, setChecked] = React.useState(true);
+  const [tabs, setTabs] = React.useState(1)
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
-  
 	return(
 		<Background>
       <BackgroundCard>
-        <div >
-          <TextInput label="RG"/>
-        </div>
+        <TabContext value={tabs.toString()}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList onChange={e => console.log(e)} aria-label="lab API tabs example">
+              <Tab label="Cadastro" value="1" onClick={() => setTabs(1)}/>
+              <Tab label="Lista" value="2" onClick={() => setTabs(2)}/>
+            </TabList>
+          </Box>
+          <TabPanel value="1"><CadastroForm /></TabPanel>
+          <TabPanel value="2">Lista</TabPanel>
+        </TabContext>
         <br/>
-        <div >
-          <TextInput label="Orgão Expeditor"/>
-        </div>
-        <br/>
-        <div >
-          <TextInput label="Data de Emissão"/>
-        </div>
-        <br/>
-        <div >
-          <br/>
-          <GenderCheckbox
-            aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="Masculino"
-            name="radio-buttons-group"> 
 
-            <FormControlLabel value="Masculino" control={<Radio />} label="Masculino" />
-            <FormControlLabel value="Feminino" control={<Radio />} label="Feminino" />
-          </GenderCheckbox>
-        </div>
-        <br/>
-        <Button variant="contained">Adicionar</Button>
       </BackgroundCard>       
 		</Background>
 	)
