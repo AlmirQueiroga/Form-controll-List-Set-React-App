@@ -1,8 +1,5 @@
-import Cadastro from "./cadastro"
-
 interface Resposta {
-    count: number
-    data: Cadastro[]
+    data: any
 }
 
 export default Resposta

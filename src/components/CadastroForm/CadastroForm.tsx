@@ -3,21 +3,16 @@ import { useFormik, FormikHelpers } from 'formik'
 import Cadastro from '../../models/cadastro'
 import * as Yup from 'yup'
 import api from "../../resources/api";
-import { GenderCheckbox, TextInput } from "./cadastro.styles";
+import { GenderCheckbox, TextInput, Form } from "./cadastro.styles";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Box, Button, FormControl, FormControlLabel, InputLabel, MenuItem, Radio, Select } from "@mui/material";
+import { Button, FormControl, FormControlLabel, InputLabel, MenuItem, Radio, Select } from "@mui/material";
 import moment from 'moment'
 
 export default function CadastroForm(): JSX.Element {
-  const [checked, setChecked] = useState(true);
-
-  const [itemSelected, setSelected] = useState<any>()
   
   const [jsonList, setJsonList] = useState([]);
-
-  const [date, setDate] = useState<Date>()
 
   const onSubmit = (value: any, formikHelpers: FormikHelpers<Cadastro>) => {
     let valid = true
@@ -26,13 +21,18 @@ export default function CadastroForm(): JSX.Element {
       if (value[key] === '' || value[key] === undefined) {
         setFieldError(key, 'Campo obrigatório')
         valid = false
+      }      
+      else if(!value.orgaoExpeditor.value){
+        setFieldError("orgaoExpeditor", 'Campo obrigatório')
+        valid = false
       }
     })
-
-    if (valid)
-      if (values.dtExpedicao) 
+    if (valid){
+      if (values.dtExpedicao) {
         values.dtExpedicao = moment(values.dtExpedicao).format('DD-MM-YYYY')
-    // se passar manda pra  api
+      }
+      api.post("/list",values) 
+    }
   }
 
   
@@ -55,11 +55,11 @@ export default function CadastroForm(): JSX.Element {
   })
   
   useEffect(()=>{
-    api.get("/orgao_emissor").then((res:any) => setJsonList(res.data[0].orgao_emissor))
+    api.get("/orgao_emissor").then((res:any) => {setJsonList(res.data[0].orgao_emissor); setFieldValue('orgaoExpeditor', res.data[0].orgao_emissor[0])})
   },[])
 
   return (
-    <>
+    <Form>
       <div>
         <TextInput
           label="RG"
@@ -72,15 +72,14 @@ export default function CadastroForm(): JSX.Element {
       </div>
       <br />
       <div >
-        <FormControl>
-          <InputLabel id="orgao-expeditor-id">Orgão Expeditor</InputLabel>
+        <FormControl error={errors.orgaoExpeditor !== undefined}>
+          <InputLabel id="orgao-expeditor-id" >Orgão Expeditor</InputLabel>
           <Select
             labelId="orgao-expeditor-id"
             value={values.orgaoExpeditor}
             label="orgao-expeditor"
             onChange={(e: any) => setFieldValue('orgaoExpeditor', e.target.value)}
-            style={{ width: 260 }}
-            error={errors.orgaoExpeditor !== undefined}
+            style={{ width: 260 }} 
             onBlur={handleBlur}
           >
             {jsonList.map((item: any, index: number) => (
@@ -135,6 +134,6 @@ export default function CadastroForm(): JSX.Element {
       </div>
       <br />
       <Button variant="contained" onClick={(e: any) => handleSubmit(e)} disabled={!isValid}>Adicionar</Button>
-    </>
+    </Form>
   )
 }

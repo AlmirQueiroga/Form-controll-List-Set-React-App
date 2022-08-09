@@ -10,9 +10,15 @@ const Background = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+interface BackgroundCardProps {
+  list: boolean
+}
+
 const BackgroundCard = styled(Card)`
   padding:25px;
-  width: 25vw;
+  width: ${({ list }: BackgroundCardProps) => list ? 800 : 350}px;
+  margin-top: ${({ list }: BackgroundCardProps) => !list ? 150 : 0}px;
   display: flex;
   justify-content: center;
   align-items: center;

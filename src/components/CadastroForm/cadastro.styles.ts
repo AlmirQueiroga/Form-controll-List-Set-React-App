@@ -11,4 +11,12 @@ const TextInput = styled(TextField)`
   color: white;
 `
 
-export{GenderCheckbox,TextInput}
+const Form = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex: 1
+`
+
+export{GenderCheckbox,TextInput, Form}
