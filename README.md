@@ -1,47 +1,61 @@
-# Getting Started with Create React App
+# Desafio ExactaWorks
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este desafio consiste na elaboração de um aplicativo simples de uma tela cadastro de registros em uma lista e uma tela de exibição para esta lista.
 
-## Available Scripts
+## Início do Desenvolvimento 
 
-In the project directory, you can run:
+Foi utilizado framework ReactJs mas optado em utilizar typescript por questões semânticas. Para manipulação CSS foi utilizado styled components e 
+para elaboração de componentes foi utilizado Material-UI, essas foram as decisões iniciais para elaboração do projeto elaborado ao seguir.
 
-### `npm start`
+### Inputs de Cadastro
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+O desenvolvimento dos inputs rodou todo ao redor do Material UI, utilizando TextInput, DataPicker, Select e Radio, fora os componentes de visualização 
+e organização (Como Card, MenuItem, FormControl, TabList, etc). Foi realizado a implementação padrão dos componentes de Rg, Data de expedição e Gênero, a primeira etapa mais técnica do projeto foi o processo de popular o Select com dados tirados de um Json estático por meio de um request Ajax.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Popular Select de orgão emissor
 
-### `npm test`
+Para criarmos a lista foi utilizado os hooks useState e useEffect para fazer o request. Para a chamada http foi escolhido o axios
+para realizar o request ajax em nosso useEffect, armazenando na list do useState e utilizando sua label para identificação no select
+e o value para a função setFieldValue utilizada na biblioteca Formik para o controle de estado do formulário
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Utilização do Formik
 
-### `npm run build`
+Ao iniciar a etapa de desenvolvimento do comportamento dos botões, foi mais favorável a utilização do Formik, uma biblioteca que monitora o estado do formulário,
+desta forma sendo utilizado no Submit do cadastro, o erro de validação, onBlur na validação, setar valores e valores iniciais(utilizado no edit), para este controle foi
+elabora a interface Cadastro com a estrutura do objeto de cadastro a ser enviado no onSubmit.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Submit para MockApi
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Como a api agora é utilizada diversas verses durante durante o projeto foi criada uma instância separada com uma baseurl acessada toda vez que a api for necessária. 
+No Submit do Formik é realizado a validação e o request POST para api e o redirecionamento para a tela de listagem.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Roteamento e tela de listagem básica
 
-### `npm run eject`
+Como antes citado brevemente anteriormente, a organização do app consiste em uma Home que importa CadastroForm e Lista como Tabs, então foi considerado inicialmente
+utilizar react-router-dom mas com esta organização de aplicativo foi mais eficiente utilizar um useState no componente pai que controla o estado de exibição das tabs, então quando
+necessário o roteamento pelos componentes filhos é acessada a função setTabs do componente pai.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Ao chegar na tela Lista é utilizado um useEffect para acesso a api assim que o componente é criado e salvar a lista que os itens são exibidos em ListGrids com overflow juntamente com um botão de editar e deletar, salvando id para identificação.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Botão de deletar e Dialog
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Ao escolher o botão de deletar de determinado item na lista, é utillizado um state para controle de um Dialog que é
+uma tela de confirmação que se confirmado irá fazer a solicitação de delete utilizando o id salvo, assim atualizando a
+lista na api e a página atualizando a visualização.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Botão de edição e Redux
 
-## Learn More
+Ao desenvolver o botão de editar, poderia ser feito utilizando a mesma estratégia do roteamento, com um estado no componente Home para receber o id e realizar um fidbyId na
+api na tela de cadastro, mas foi preferível utilizar o Redux para maior complexidade do aplicativo, demonstrar dominio e apresentar um aplicativo com melhor arquitetura.
+Desta forma foi desenvolvido a Store que utiliza do reducer e as actions do dispatcher para dar estado global ao estado de edição, agora ao se carregar a tela de cadastro
+é observado vários acessos à initialValues que é um objeto de valores acessados pelo useSelector, caso um cadastro seja selecionado para edição este é incorporado como este objeto,
+então ao verificar o estado de edição é verificado este objeto que é incorporado para edição e alterado a organização de botões e a chamada da api para Put, ainda utillizando a interface e id para identificação.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Bibliotecas
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-"# desafio-exactaworks" 
+
+
+### TODO
+### Testes
+### PixelPerfect
+### Tela Lista Mobile-Friendly

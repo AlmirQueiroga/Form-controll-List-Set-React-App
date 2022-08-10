@@ -43,8 +43,7 @@ export default function CadastroForm(props: CadastroFormProps): JSX.Element {
         values.dtExpedicao = moment(values.dtExpedicao).format('DD-MM-YYYY')
       }
       if(initialValues){
-
-        api.put(`/list/${initialValues.id}`)
+        api.put(`/list/${initialValues.id}`, values)
         onFinish()
       }else{
         api.post("/list",values) 
