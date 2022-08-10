@@ -7,12 +7,23 @@ import { GenderCheckbox, TextInput, Form } from "./cadastro.styles";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, FormControl, FormControlLabel, InputLabel, MenuItem, Radio, Select } from "@mui/material";
 import moment from 'moment'
+import { EditarState } from '../../store/edit/type.d';
 
-export default function CadastroForm(): JSX.Element {
-  
+import { removeEditar } from '../../store/edit/actions'
+
+interface CadastroFormProps {
+  onFinish: () => void
+}
+
+export default function CadastroForm(props: CadastroFormProps): JSX.Element {
+  const initialValues = useSelector((state: EditarState) => state.editar)
   const [jsonList, setJsonList] = useState([]);
+  const dispatch = useDispatch()
+  const [enableReinitialize, setEnableReinitialize] = useState<boolean>(false)
+  const { onFinish } = props
 
   const onSubmit = (value: any, formikHelpers: FormikHelpers<Cadastro>) => {
     let valid = true
@@ -31,7 +42,14 @@ export default function CadastroForm(): JSX.Element {
       if (values.dtExpedicao) {
         values.dtExpedicao = moment(values.dtExpedicao).format('DD-MM-YYYY')
       }
-      api.post("/list",values) 
+      if(initialValues){
+
+        api.put(`/list/${initialValues.id}`)
+        onFinish()
+      }else{
+        api.post("/list",values) 
+        onFinish()
+      }
     }
   }
 
@@ -39,9 +57,11 @@ export default function CadastroForm(): JSX.Element {
   const { values, setFieldError, setFieldValue, touched, errors, handleSubmit, isValid, handleBlur } = useFormik<Cadastro>({
     validateOnBlur: true, 
     validateOnChange: false,
-    initialValues: {
+    enableReinitialize,
+    initialValues: initialValues ?? {
+      id: undefined,
       nrRg: '',
-      orgaoExpeditor: '',
+      orgaoExpeditor: undefined,
       dtExpedicao: undefined,
       tpSexo: 0
     },
@@ -57,6 +77,10 @@ export default function CadastroForm(): JSX.Element {
   useEffect(()=>{
     api.get("/orgao_emissor").then((res:any) => {setJsonList(res.data[0].orgao_emissor); setFieldValue('orgaoExpeditor', res.data[0].orgao_emissor[0])})
   },[])
+
+  useEffect(() => {
+    if (!initialValues) setEnableReinitialize(true)
+  }, [initialValues])
 
   return (
     <Form>
@@ -133,7 +157,10 @@ export default function CadastroForm(): JSX.Element {
         </GenderCheckbox>
       </div>
       <br />
-      <Button variant="contained" onClick={(e: any) => handleSubmit(e)} disabled={!isValid}>Adicionar</Button>
+      <div style={{ display: 'flex', width: '100%', justifyContent: initialValues ? 'space-between' : 'center' }}>
+      {initialValues && <Button variant="contained" onClick={(e: any) => dispatch(removeEditar())}>Cancelar</Button>}
+      <Button variant="contained" onClick={(e: any) => handleSubmit(e)} disabled={!isValid}>{initialValues ? 'Salvar' : 'Adicionar'}</Button>
+      </div>
     </Form>
   )
 }

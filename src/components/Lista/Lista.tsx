@@ -3,14 +3,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useEffect, useState } from "react";
 import api from "../../resources/api";
+import { useDispatch } from 'react-redux';
 import { ListGrid, Item } from "./lista.styles";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
-export default function Lista(): JSX.Element {
+import { addEditar } from '../../store/edit/actions';
+
+interface listaProps {
+  onEdit: () => void
+}
+
+export default function Lista(props: listaProps): JSX.Element {
 
   const [list, setList] = useState([])
   const [selectedId, setSelectedId] = useState()
   const [open, setOpen] = useState(false)
+  const dispatch = useDispatch()
+  const { onEdit } = props
 
   useEffect(()=>{
     api.get("/list").then((res:any) => setList(res.data))
@@ -21,12 +30,18 @@ export default function Lista(): JSX.Element {
   };
 
   const handleDelete = (index:number,id:any) => {
-    
-    console.log(id);
-    console.log(index);
     api.delete(`/list/${id}`).then((res) => setList(list.filter((item:any) => item.id !== id)));
     setOpen(false);
   };
+
+  const handleEdit = (id: number) => {
+    const item = list.find((item: any) => item.id === id)
+    if (item) {
+
+      dispatch(addEditar(item)) 
+      onEdit()
+    }
+  }
 
 
   return(
@@ -90,7 +105,7 @@ export default function Lista(): JSX.Element {
             </Dialog>
           </ListGrid>
           <ListGrid item xs={1}>
-            <IconButton aria-label="edit">
+            <IconButton aria-label="edit" onClick={()=>{handleEdit(item.id)}}>
               <EditIcon />
             </IconButton>
           </ListGrid>

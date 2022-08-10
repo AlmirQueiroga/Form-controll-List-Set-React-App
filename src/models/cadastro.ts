@@ -1,6 +1,9 @@
+import OrgaoExpeditor from './orgaoexpeditor'
+
 interface Cadastro {
+    id?:number
     nrRg: string
-    orgaoExpeditor: any
+    orgaoExpeditor?: OrgaoExpeditor
     dtExpedicao?: Date | string
     tpSexo?: number
 }
