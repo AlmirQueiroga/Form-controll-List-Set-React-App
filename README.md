@@ -110,12 +110,43 @@ objeto que é incorporado para edição e alterado a organização de botões e 
 ![image](https://user-images.githubusercontent.com/28552417/183974751-7a4762c6-e71f-412c-85d3-50d01c381646.png)
 ![image](https://user-images.githubusercontent.com/28552417/183974822-581e9b72-5ddd-4ab1-976f-fd6bd0521b36.png)
 
+### Testes
+
+Foi realizada implementação de testes de exibição das labels na tela de listagem e adicionado labels de data-testid
+
+![image](https://user-images.githubusercontent.com/28552417/184072233-0a9ab9f5-e6cb-450b-a581-8ee1be0b4ce3.png)
+
+Foi iniciado implementação de testes de formulário na tela de cadastro utilizando jest
+
+![image](https://user-images.githubusercontent.com/28552417/184072519-39704e15-13bb-4e17-97c1-a7b5ea087cd5.png)
+
 
 ### Bibliotecas
 
-
-
-### TODO
-### Testes
-### PixelPerfect
-### Tela Lista Mobile-Friendly
+@emotion/react: 11.10.0
+@emotion/styled: 11.10.0
+@mui/icons-material: 5.8.4
+@mui/lab: 5.0.0-alpha.93
+@mui/material: 5.9.3
+@mui/x-date-pickers: 5.0.0-beta.4
+@reduxjs/toolkit: 1.8.4
+@testing-library/jest-dom: 5.16.5
+@testing-library/react": 13.3.0
+@testing-library/user-event: 13.5.0
+@types/jest: 27.5.2
+@types/node: 16.11.47
+@types/react: 18.0.15
+@types/react-dom: 18.0.6
+axios: 0.27.2
+date-fns: 2.29.1
+formik: 2.2.9
+react: 18.2.0
+react-dom: 18.2.0
+react-redux: 8.0.2
+react-router-dom: 6.3.0
+react-scripts: 5.0.1
+redux: 4.2.0
+redux-thunk: 2.4.1
+typescript: 4.7.4
+web-vitals: 2.1.4
+yup: 0.32.11
