@@ -53,7 +53,7 @@ export default function CadastroForm(props: CadastroFormProps): JSX.Element {
   }
 
   
-  const { values, setFieldError, setFieldValue, touched, errors, handleSubmit, isValid, handleBlur } = useFormik<Cadastro>({
+  const { values, setFieldError, setFieldValue,  errors, handleSubmit, isValid, handleBlur } = useFormik<Cadastro>({
     validateOnBlur: true, 
     validateOnChange: false,
     enableReinitialize,
@@ -75,7 +75,7 @@ export default function CadastroForm(props: CadastroFormProps): JSX.Element {
   
   useEffect(()=>{
     api.get("/orgao_emissor").then((res:any) => {setJsonList(res.data[0].orgao_emissor); setFieldValue('orgaoExpeditor', res.data[0].orgao_emissor[0])})
-  },[])
+  },[setFieldValue])
 
   useEffect(() => {
     if (!initialValues) setEnableReinitialize(true)
@@ -83,7 +83,7 @@ export default function CadastroForm(props: CadastroFormProps): JSX.Element {
 
   return (
     <Form>
-      <div>
+      <div data-testid= "rg">
         <TextInput
           label="RG"
           value={values.nrRg}
@@ -94,12 +94,12 @@ export default function CadastroForm(props: CadastroFormProps): JSX.Element {
 
       </div>
       <br />
-      <div >
+      <div data-testid="orgaoExpeditor">
         <FormControl error={errors.orgaoExpeditor !== undefined}>
           <InputLabel id="orgao-expeditor-id" >Orgão Expeditor</InputLabel>
           <Select
             labelId="orgao-expeditor-id"
-            value={values.orgaoExpeditor}
+            value={values.orgaoExpeditor ?? ''}
             label="orgao-expeditor"
             onChange={(e: any) => setFieldValue('orgaoExpeditor', e.target.value)}
             style={{ width: 260 }} 
@@ -113,7 +113,7 @@ export default function CadastroForm(props: CadastroFormProps): JSX.Element {
         </FormControl>
       </div>
       <br />
-      <div >
+      <div data-testid="dtExpedicao">
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label="Data de Expedição"

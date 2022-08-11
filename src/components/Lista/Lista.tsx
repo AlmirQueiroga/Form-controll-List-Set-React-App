@@ -17,7 +17,7 @@ export default function Lista(props: listaProps): JSX.Element {
 
   const [list, setList] = useState([])
   const [selectedId, setSelectedId] = useState()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState<boolean>(false)
   const dispatch = useDispatch()
   const { onEdit } = props
 
@@ -49,19 +49,19 @@ export default function Lista(props: listaProps): JSX.Element {
     <ListGrid container spacing={1} style={{minWidth:500}}>
       <Item style={{backgroundColor:"#2c2ff2"}}>
         <ListGrid item xs={2}>
-          RG
+          <span data-testid="rg">RG</span>
         </ListGrid>
         <ListGrid item xs={2}>
-          Orgão Emissor
+          <span data-testid="ogEmissor">Orgão Emissor</span>
         </ListGrid>
         <ListGrid item xs={2}>
-          Data de Expedição
+          <span data-testid="dtExpedicao">Data de Expedição</span>
         </ListGrid>
         <ListGrid item xs={3}>
-          Sexo
+          <span data-testid="sx">Sexo</span>
         </ListGrid>
         <ListGrid item xs={2}>
-          Opções
+          <span data-testid="opcoes">Opções</span>
         </ListGrid>
       </Item>
       {list?.map((item:any,index)=>(
@@ -105,7 +105,7 @@ export default function Lista(props: listaProps): JSX.Element {
             </Dialog>
           </ListGrid>
           <ListGrid item xs={1}>
-            <IconButton aria-label="edit" onClick={()=>{handleEdit(item.id)}}>
+            <IconButton data-testid="editBtn" aria-label="edit" onClick={()=>{handleEdit(item.id)}}>
               <EditIcon />
             </IconButton>
           </ListGrid>
