@@ -1,6 +1,3 @@
-# Desafio ExactaWorks
-
-Este desafio consiste na elaboração de um aplicativo simples de uma tela cadastro de registros em uma lista e uma tela de exibição para esta lista.
 
 ![Capturar](https://user-images.githubusercontent.com/28552417/183964346-4e303493-f539-4a5b-8a62-5e8f7b783efd.PNG)
 
